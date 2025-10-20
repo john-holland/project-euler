@@ -1,0 +1,15 @@
+{
+  "name": "cursor-code",
+  "url": "https://github.com/cursor-code/cursor-code",
+  "license": "MIT",
+  "tags": ["ai", "development", "narrative", "guidance", "mathematical", "scoring", "yaml", "front-matter"],
+  "description": "Mathematical narrative guidance system for AI-assisted development with front matter support and response tracking",
+  "version": "1.0.0",
+  "classPath": "src/",
+  "releasenote": "Initial release with comprehensive test suite, AI response tracking, front matter parsing, and mathematical scoring system.",
+  "contributors": ["cursor-code-team"],
+  "dependencies": {
+    "yaml": "",
+    "hxnodejs": ""
+  }
+}

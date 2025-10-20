@@ -1,0 +1,240 @@
+# Extensible Build System Configuration Analysis
+# Comprehensive support for all major ecosystems
+
+build_systems:
+  # Node.js/JavaScript Ecosystem
+  nodejs:
+    primary_files: ["package.json"]
+    lock_files: ["package-lock.json", "yarn.lock", "pnpm-lock.yaml"]
+    config_files: [".npmrc", "tsconfig.json", "babel.config.js", "webpack.config.js"]
+    analysis_patterns:
+      dependency_health:
+        - "exact_versions": { weight: 0.3, preferred: true }
+        - "caret_ranges": { weight: 0.2, acceptable: true }
+        - "wildcard_versions": { weight: -0.5, discouraged: true }
+        - "git_dependencies": { weight: -0.3, risky: true }
+      script_quality:
+        - "essential_scripts": ["test", "build", "start", "lint"]
+        - "tool_integration": ["webpack", "babel", "eslint", "jest", "prettier"]
+        - "security_patterns": ["pre-commit", "audit", "security"]
+      metadata_completeness:
+        - "required_fields": ["name", "version", "description", "author", "license"]
+        - "recommended_fields": ["repository", "keywords", "homepage", "bugs"]
+        - "quality_indicators": ["engines", "files", "main", "types", "exports"]
+
+  # Python Ecosystem
+  python:
+    primary_files: ["pyproject.toml", "setup.py", "setup.cfg"]
+    lock_files: ["poetry.lock", "Pipfile.lock", "requirements-lock.txt"]
+    config_files: ["requirements.txt", "Pipfile", "tox.ini", "pytest.ini"]
+    analysis_patterns:
+      dependency_health:
+        - "pinned_versions": { weight: 0.4, preferred: true }
+        - "compatible_releases": { weight: 0.3, acceptable: true }
+        - "version_ranges": { weight: 0.2, acceptable: true }
+        - "development_dependencies": { weight: 0.1, separate_scoring: true }
+      build_system:
+        - "modern_build": ["setuptools>=61.0", "hatchling", "flit", "poetry"]
+        - "static_metadata": ["pyproject.toml"]
+        - "tool_configuration": ["black", "mypy", "pytest", "flake8"]
+      project_structure:
+        - "src_layout": { preferred: true, weight: 0.2 }
+        - "flat_layout": { acceptable: true, weight: 0.1 }
+        - "tests_directory": { required: true, weight: 0.3 }
+
+  # Rust Ecosystem
+  rust:
+    primary_files: ["Cargo.toml"]
+    lock_files: ["Cargo.lock"]
+    config_files: [".cargo/config.toml", "rust-toolchain.toml"]
+    analysis_patterns:
+      dependency_health:
+        - "semantic_versions": { weight: 0.4, preferred: true }
+        - "git_dependencies": { weight: -0.2, development_only: true }
+        - "path_dependencies": { weight: 0.1, workspace_only: true }
+        - "feature_flags": { weight: 0.2, modularity_bonus: true }
+      workspace_structure:
+        - "workspace_members": { weight: 0.3, organization_bonus: true }
+        - "shared_dependencies": { weight: 0.2, consistency_bonus: true }
+        - "feature_unification": { weight: 0.2, optimization_bonus: true }
+      code_quality:
+        - "edition_2021": { weight: 0.2, modern_rust: true }
+        - "lto_optimization": { weight: 0.1, performance_bonus: true }
+        - "debug_symbols": { weight: 0.1, debugging_bonus: true }
+
+  # Go Ecosystem
+  go:
+    primary_files: ["go.mod"]
+    lock_files: ["go.sum"]
+    config_files: [".golangci.yml", "Makefile"]
+    analysis_patterns:
+      module_health:
+        - "semantic_import_versioning": { weight: 0.4, v2_plus_bonus: true }
+        - "replace_directives": { weight: -0.2, temporary_only: true }
+        - "retract_directives": { weight: 0.1, maintenance_bonus: true }
+      dependency_management:
+        - "minimal_dependencies": { weight: 0.3, simplicity_bonus: true }
+        - "standard_library_preference": { weight: 0.2, reliability_bonus: true }
+        - "vendor_directory": { weight: 0.1, reproducibility_bonus: true }
+
+  # JVM Ecosystem (Gradle)
+  jvm_gradle:
+    primary_files: ["build.gradle", "build.gradle.kts"]
+    lock_files: ["gradle.lockfile"]
+    config_files: ["gradle.properties", "settings.gradle", "gradle/wrapper/gradle-wrapper.properties"]
+    analysis_patterns:
+      build_configuration:
+        - "kotlin_dsl": { weight: 0.2, type_safety_bonus: true }
+        - "version_catalogs": { weight: 0.3, dependency_management_bonus: true }
+        - "composite_builds": { weight: 0.2, modularity_bonus: true }
+      dependency_health:
+        - "bom_usage": { weight: 0.3, consistency_bonus: true }
+        - "api_vs_implementation": { weight: 0.2, encapsulation_bonus: true }
+        - "test_fixtures": { weight: 0.1, testing_bonus: true }
+      performance_optimization:
+        - "gradle_daemon": { weight: 0.2, build_speed_bonus: true }
+        - "parallel_execution": { weight: 0.2, build_speed_bonus: true }
+        - "build_cache": { weight: 0.2, build_speed_bonus: true }
+
+  # JVM Ecosystem (Maven)
+  jvm_maven:
+    primary_files: ["pom.xml"]
+    lock_files: []
+    config_files: ["settings.xml", ".mvn/maven.config"]
+    analysis_patterns:
+      project_structure:
+        - "standard_directory_layout": { weight: 0.3, convention_bonus: true }
+        - "multi_module_projects": { weight: 0.2, organization_bonus: true }
+        - "parent_pom_usage": { weight: 0.2, consistency_bonus: true }
+      dependency_management:
+        - "dependency_management_section": { weight: 0.3, version_control_bonus: true }
+        - "scope_usage": { weight: 0.2, correct_scoping_bonus: true }
+        - "exclusions_minimal": { weight: 0.1, clean_dependencies_bonus: true }
+
+  # Swift Ecosystem
+  swift:
+    primary_files: ["Package.swift"]
+    lock_files: ["Package.resolved"]
+    config_files: [".swiftpm/xcode/package.xcworkspace"]
+    analysis_patterns:
+      package_structure:
+        - "swift_tools_version": { weight: 0.2, modern_swift_bonus: true }
+        - "library_targets": { weight: 0.3, modularity_bonus: true }
+        - "executable_targets": { weight: 0.2, application_bonus: true }
+        - "test_targets": { weight: 0.3, testing_bonus: true }
+      dependency_health:
+        - "semantic_versioning": { weight: 0.4, stability_bonus: true }
+        - "branch_dependencies": { weight: -0.3, instability_penalty: true }
+        - "local_dependencies": { weight: 0.1, development_bonus: true }
+
+  # Ruby Ecosystem
+  ruby:
+    primary_files: ["Gemfile"]
+    lock_files: ["Gemfile.lock"]
+    config_files: [".ruby-version", "Rakefile", ".rspec"]
+    analysis_patterns:
+      dependency_health:
+        - "pessimistic_versioning": { weight: 0.3, stability_bonus: true }
+        - "group_organization": { weight: 0.2, organization_bonus: true }
+        - "platform_specific": { weight: 0.1, compatibility_bonus: true }
+      development_practices:
+        - "ruby_version_specified": { weight: 0.3, consistency_bonus: true }
+        - "bundler_version": { weight: 0.2, reproducibility_bonus: true }
+        - "git_sources_minimal": { weight: -0.2, stability_concern: true }
+
+  # PHP Ecosystem
+  php:
+    primary_files: ["composer.json"]
+    lock_files: ["composer.lock"]
+    config_files: ["phpunit.xml", "phpstan.neon", "psalm.xml"]
+    analysis_patterns:
+      dependency_health:
+        - "semantic_versioning": { weight: 0.4, stability_bonus: true }
+        - "require_dev_separation": { weight: 0.2, organization_bonus: true }
+        - "platform_requirements": { weight: 0.2, compatibility_bonus: true }
+      code_quality:
+        - "autoload_psr4": { weight: 0.3, standards_compliance_bonus: true }
+        - "scripts_defined": { weight: 0.2, automation_bonus: true }
+        - "suggest_field": { weight: 0.1, extensibility_bonus: true }
+
+  # .NET Ecosystem
+  dotnet:
+    primary_files: ["*.csproj", "*.fsproj", "*.vbproj"]
+    lock_files: ["packages.lock.json"]
+    config_files: ["Directory.Build.props", "Directory.Packages.props", "nuget.config"]
+    analysis_patterns:
+      project_configuration:
+        - "sdk_style_projects": { weight: 0.3, modern_dotnet_bonus: true }
+        - "target_framework": { weight: 0.2, compatibility_assessment: true }
+        - "central_package_management": { weight: 0.3, organization_bonus: true }
+      package_management:
+        - "package_references": { weight: 0.4, modern_dependency_bonus: true }
+        - "framework_references": { weight: 0.2, framework_integration_bonus: true }
+        - "package_versions_centralized": { weight: 0.2, consistency_bonus: true }
+
+  # Haxe Ecosystem
+  haxe:
+    primary_files: ["build.hxml", "haxelib.json"]
+    lock_files: []
+    config_files: ["compile.hxml", "test.hxml"]
+    analysis_patterns:
+      build_configuration:
+        - "multiple_targets": { weight: 0.4, cross_platform_bonus: true }
+        - "conditional_compilation": { weight: 0.2, flexibility_bonus: true }
+        - "library_usage": { weight: 0.2, ecosystem_integration_bonus: true }
+      project_structure:
+        - "source_paths": { weight: 0.3, organization_bonus: true }
+        - "resource_paths": { weight: 0.1, asset_management_bonus: true }
+        - "macro_usage": { weight: 0.2, advanced_features_bonus: true }
+
+# Ecosystem-specific quality indicators
+quality_indicators:
+  security:
+    nodejs: ["npm audit", "snyk", "security policies", "private registry"]
+    python: ["safety", "bandit", "pip-audit", "security scanning"]
+    rust: ["cargo audit", "rustsec", "dependency scanning"]
+    go: ["govulncheck", "gosec", "dependency scanning"]
+    jvm: ["dependency-check", "snyk", "security scanning"]
+    
+  testing:
+    nodejs: ["jest", "mocha", "cypress", "playwright", "test coverage"]
+    python: ["pytest", "unittest", "coverage", "tox", "test matrix"]
+    rust: ["cargo test", "proptest", "criterion", "test coverage"]
+    go: ["go test", "testify", "test coverage", "benchmarks"]
+    jvm: ["junit", "testng", "mockito", "test coverage"]
+    
+  code_quality:
+    nodejs: ["eslint", "prettier", "typescript", "husky", "lint-staged"]
+    python: ["black", "mypy", "flake8", "bandit", "pre-commit"]
+    rust: ["rustfmt", "clippy", "cargo check", "rust-analyzer"]
+    go: ["gofmt", "golangci-lint", "go vet", "staticcheck"]
+    jvm: ["spotless", "checkstyle", "pmd", "spotbugs"]
+    
+  documentation:
+    nodejs: ["jsdoc", "typedoc", "readme", "api docs"]
+    python: ["sphinx", "mkdocs", "docstrings", "readme"]
+    rust: ["rustdoc", "mdbook", "doc comments", "examples"]
+    go: ["godoc", "doc comments", "examples", "readme"]
+    jvm: ["javadoc", "dokka", "readme", "api docs"]
+
+# Framework-specific enhancements
+frameworks:
+  react:
+    config_files: [".eslintrc", "tsconfig.json", "babel.config.js"]
+    quality_patterns: ["hooks", "typescript", "testing-library", "storybook"]
+    
+  vue:
+    config_files: ["vue.config.js", "vite.config.js"]
+    quality_patterns: ["composition-api", "typescript", "vue-tsc", "vitest"]
+    
+  angular:
+    config_files: ["angular.json", "tsconfig.json", "karma.conf.js"]
+    quality_patterns: ["typescript", "rxjs", "jasmine", "protractor"]
+    
+  django:
+    config_files: ["settings.py", "requirements.txt", "manage.py"]
+    quality_patterns: ["django-extensions", "pytest-django", "django-debug-toolbar"]
+    
+  rails:
+    config_files: ["Gemfile", "config/application.rb", "Rakefile"]
+    quality_patterns: ["rspec", "rubocop", "brakeman", "simplecov"]

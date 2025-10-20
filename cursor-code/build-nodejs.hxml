@@ -1,0 +1,39 @@
+# Node.js builds for Cursor Code
+
+# CLI tool build (Node.js)
+-js cursor-code.js
+-cp src
+-main CursorCodeCLI
+-lib hxnodejs
+-lib yaml
+-D nodejs
+
+--next
+
+# Test suite build (Node.js)
+-js cursor-code-tests.js
+-cp src
+-main cursorcode.CursorCodeTests
+-lib hxnodejs
+-lib yaml
+-D nodejs
+
+--next
+
+# Web server build (Node.js)
+-js cursor-coda-server.js
+-cp src
+-main CursorCodaServer
+-lib hxnodejs
+-lib yaml
+-D nodejs
+
+--next
+
+# Library build (Node.js module)
+-js lib/cursor-code-lib.js
+-cp src
+-main cursorcode.CursorCode
+-lib hxnodejs
+-lib yaml
+-D nodejs

@@ -1,0 +1,23 @@
+# Neko builds for Cursor Code
+
+# CLI tool build (Neko)
+-neko cursor-code.n
+-cp src
+-main CursorCodeCLI
+-lib yaml
+
+--next
+
+# Test suite build (Neko)
+-neko cursor-code-tests.n
+-cp src
+-main CursorCodeTests
+-lib yaml
+
+--next
+
+# Web server build (Neko)
+-neko cursor-coda-server.n
+-cp src
+-main CursorCodaServer
+-lib yaml

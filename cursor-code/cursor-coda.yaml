@@ -1,0 +1,359 @@
+{
+  "cursor_coda": {
+    "last_updated": "2025-08-23 16:56:00",
+    "project": "WAN OS ROMs Implementation Guide",
+    "version": "2.0",
+    "context_responses": {
+      "performance_issue": [
+        "I need to profile this to find bottlenecks",
+        "Let me look for mathematical optimizations",
+        "I should consider a different algorithm"
+      ],
+      "stuck": [
+        "Let me step back and re-read the problem",
+        "I should try a simpler approach first",
+        "Let me break this down into smaller pieces"
+      ],
+      "wan_os_rom_implementation": [
+        "Let me check the ROM registry and deployment configuration",
+        "I should verify the serve pattern architecture is properly implemented",
+        "Let me ensure the persistence and telemetry systems are configured"
+      ],
+      "serve_pattern_issues": [
+        "Check the intelligent router configuration and health checks",
+        "Verify the backend proxy and circuit breaker settings",
+        "Ensure the static asset manager is serving the frontend ROM correctly"
+      ]
+    },
+    "narrative_templates": {
+      "problem_start": [
+        "Let me analyze this problem systematically",
+        "First, I'll understand the constraints and requirements",
+        "I'll break this down into manageable sub-problems"
+      ],
+      "optimization_start": [
+        "The solution works, but let me optimize it",
+        "I'll look for mathematical shortcuts first",
+        "Let me analyze the performance bottlenecks"
+      ],
+      "implementation_start": [
+        "Now I'll implement a working solution",
+        "I'll start with a clear, readable approach",
+        "Let me build this step by step"
+      ],
+      "wan_os_rom_start": [
+        "Let me set up the ROM structure with proper npm packaging",
+        "I'll implement the serve pattern with intelligent routing",
+        "I'll add persistence and telemetry for monitoring"
+      ]
+    },
+    "sections": {
+      "debugging_strategy": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Debugging Methodology",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "optimization_phase": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Optimization Strategy",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "algorithm_design": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Algorithm Design Principles",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "code_quality": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Code Quality Standards",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "project_euler_specific": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Project Euler Specific Patterns",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "problem_analysis": {
+        "development_style": [
+          "Start simple and iterate",
+          "Test frequently",
+          "Document decisions"
+        ],
+        "title": "Problem Analysis Framework",
+        "key_questions": [
+          "What are the core concepts?",
+          "What are the constraints?",
+          "What approach should I take?"
+        ],
+        "preface": "Default preface for $sectionTitle"
+      },
+      "wan_os_roms_implementation": {
+        "development_style": [
+          "ROM-first architecture with npm packaging",
+          "Serve pattern with intelligent routing",
+          "Persistence and telemetry integration",
+          "Configuration-driven deployment"
+        ],
+        "title": "WAN OS ROMs Implementation Guide",
+        "key_questions": [
+          "What ROM type am I implementing (frontend, backend, service)?",
+          "How should I structure the npm package with @wanos-rom naming?",
+          "What serve pattern components do I need?",
+          "How do I implement persistence and telemetry?",
+          "What deployment configuration is required?"
+        ],
+        "preface": "WAN OS ROMs (Read-Only Modules) are distributed, immutable, shared components that implement the serve pattern. This guide covers the complete implementation from package structure to deployment.",
+        "implementation_checklist": [
+          "Create npm package with @wanos-rom/{module-name} naming",
+          "Implement serve pattern architecture (IntelligentRouter, BackendProxy, StaticAssetManager)",
+          "Add persistence system with file-based storage",
+          "Integrate OpenTelemetry for monitoring",
+          "Configure deployment environments (local, vendor, enterprise, public)",
+          "Set up health checks and circuit breakers",
+          "Implement ROM registry for discovery",
+          "Add configuration-driven features"
+        ],
+        "core_components": {
+          "intelligent_router": {
+            "description": "Smart routing decisions based on health, latency, geography, and load",
+            "key_features": [
+              "Health-based routing with circuit breakers",
+              "Latency-aware backend selection",
+              "Geographic routing for global deployments",
+              "Load balancing strategies (round-robin, least connections, least latency)"
+            ],
+            "implementation_pattern": "Class with routing strategies and health monitoring"
+          },
+          "backend_proxy": {
+            "description": "Handles forwarding requests to selected backend services",
+            "key_features": [
+              "Request/response forwarding",
+              "Header management",
+              "Error handling and retries",
+              "Timeout management"
+            ],
+            "implementation_pattern": "Express middleware with fetch API integration"
+          },
+          "static_asset_manager": {
+            "description": "Manages serving static frontend files as ROMs",
+            "key_features": [
+              "Static file serving",
+              "SPA routing support",
+              "Asset optimization",
+              "ROM pattern implementation"
+            ],
+            "implementation_pattern": "Express static middleware with custom routing logic"
+          },
+          "persistence_system": {
+            "description": "Simple file-based persistence for ROM state",
+            "key_features": [
+              "JSON file storage",
+              "Automatic data directory creation",
+              "Timestamp tracking",
+              "Error handling and recovery"
+            ],
+            "implementation_pattern": "Class with async file operations using fs-extra"
+          },
+          "telemetry_service": {
+            "description": "OpenTelemetry integration for monitoring and observability",
+            "key_features": [
+              "Request/response tracking",
+              "Performance metrics",
+              "Error logging",
+              "Health check monitoring"
+            ],
+            "implementation_pattern": "Service class with OpenTelemetry SDK integration"
+          }
+        },
+        "package_structure": {
+          "required_files": [
+            "package.json with @wanos-rom/{module-name}",
+            "tsconfig.json for TypeScript compilation",
+            "wanos-serve.json for serve pattern configuration",
+            "src/ directory with implementation",
+            "dist/ directory for compiled output"
+          ],
+          "npm_scripts": {
+            "build": "tsc",
+            "build:dev": "tsc --watch",
+            "serve": "node dist/simple-server.js",
+            "serve:dev": "ts-node src/simple-server.ts",
+            "dev": "concurrently \"npm run build:dev\" \"npm run serve:dev\"",
+            "start": "npm run build && npm run serve"
+          },
+          "dependencies": {
+            "core": ["express", "fs-extra"],
+            "routing": ["socket.io", "compression", "helmet"],
+            "monitoring": ["express-rate-limit", "cors"],
+            "development": ["typescript", "ts-node", "concurrently", "@types/node"]
+          }
+        },
+        "serve_pattern_configuration": {
+          "wanos_serve_json_structure": {
+            "metadata": "ROM identification and versioning",
+            "serve": "Frontend and backend configurations",
+            "routing": "Rules, middleware, and authentication",
+            "cdn": "Content delivery network settings",
+            "health": "Monitoring and health check configuration",
+            "telemetry": "OpenTelemetry integration settings",
+            "performance": "Caching and optimization settings",
+            "security": "Authentication and rate limiting"
+          },
+          "environment_configurations": {
+            "local": "Full configuration values, no secrets",
+            "vendor": "Public facing URL, private variables as env variables",
+            "enterprise": "Admin/LDAP specific, OAuth settings, organization config",
+            "public": "Local-like but for caching and static serve, no secrets"
+          }
+        },
+        "deployment_patterns": {
+          "local_development": {
+            "description": "Single instance with mock services",
+            "configuration": "Full local config, mock telemetry and registry",
+            "benefits": "Fast iteration, full debugging, complete control"
+          },
+          "vendor_deployment": {
+            "description": "Product deployment with public URLs",
+            "configuration": "Environment variables for secrets, public monitoring",
+            "benefits": "Customer-facing, scalable, secure"
+          },
+          "enterprise_deployment": {
+            "description": "Organization-specific with LDAP/OAuth",
+            "configuration": "Enterprise auth, custom monitoring, compliance",
+            "benefits": "Enterprise features, compliance, customization"
+          },
+          "public_deployment": {
+            "description": "Global public monitoring platform",
+            "configuration": "Herd immunity monitoring, contractor compatibility",
+            "benefits": "Global visibility, incident response, community health"
+          }
+        },
+        "common_implementation_patterns": {
+          "simple_server": {
+            "description": "Basic server demonstrating core concepts",
+            "use_case": "Quick prototypes and learning",
+            "components": ["Express app", "Basic routing", "Mock services", "Simple persistence"]
+          },
+          "full_wanos_server": {
+            "description": "Complete WANOSServeServer implementation",
+            "use_case": "Production deployments",
+            "components": ["IntelligentRouter", "BackendProxy", "StaticAssetManager", "Full telemetry"]
+          },
+          "rom_registry": {
+            "description": "ROM discovery and registration system",
+            "use_case": "Distributed deployments",
+            "components": ["ROM catalog", "Health monitoring", "Load balancing", "Discovery API"]
+          }
+        },
+        "testing_and_validation": {
+          "unit_tests": "Test individual components in isolation",
+          "integration_tests": "Test component interactions",
+          "end_to_end_tests": "Test complete request flows",
+          "performance_tests": "Test routing and proxy performance",
+          "health_checks": "Verify all endpoints are responding",
+          "persistence_tests": "Verify data persistence and recovery"
+        },
+        "monitoring_and_observability": {
+          "health_endpoints": [
+            "/health - Overall system health",
+            "/metrics - Performance metrics",
+            "/registry/health - ROM registry status",
+            "/persistence/info - Persistence system status"
+          ],
+          "telemetry_integration": [
+            "OpenTelemetry Collector endpoint",
+            "Jaeger for distributed tracing",
+            "Prometheus for metrics collection",
+            "Grafana for visualization"
+          ],
+          "logging_strategy": [
+            "Structured logging with timestamps",
+            "Request/response logging",
+            "Error logging with stack traces",
+            "Performance logging for bottlenecks"
+          ]
+        },
+        "troubleshooting_guide": {
+          "common_issues": {
+            "typescript_compilation_errors": "Check tsconfig.json and type definitions",
+            "routing_failures": "Verify backend health and circuit breaker settings",
+            "persistence_errors": "Check file permissions and data directory",
+            "telemetry_failures": "Verify OpenTelemetry endpoint configuration"
+          },
+          "debugging_steps": [
+            "Check server logs for error messages",
+            "Verify all required environment variables",
+            "Test individual endpoints for failures",
+            "Check file system permissions and paths",
+            "Verify network connectivity for external services"
+          ]
+        },
+        "best_practices": {
+          "architecture": [
+            "Start with simple server and add complexity gradually",
+            "Use mock services for development and testing",
+            "Implement health checks for all components",
+            "Design for failure with circuit breakers and fallbacks"
+          ],
+          "development": [
+            "Use TypeScript for type safety",
+            "Implement proper error handling and logging",
+            "Test frequently with different scenarios",
+            "Document configuration and deployment steps"
+          ],
+          "deployment": [
+            "Use environment-specific configurations",
+            "Implement proper security measures",
+            "Monitor performance and health continuously",
+            "Plan for scaling and load balancing"
+          ]
+        }
+      }
+    }
+  }
+}

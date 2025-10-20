@@ -1,0 +1,12 @@
+{
+  "lastAIResponse": "",
+  "aiResponseHistory": [],
+  "ast_fitness": {},
+  "timestamp": "2025-08-07 21:05:04",
+  "integration_scores": {},
+  "project_scores": {
+    "integration": 0.7,
+    "ast_fitness": 0.349455009788794
+  },
+  "narrative_form": 0.489673005873276
+}

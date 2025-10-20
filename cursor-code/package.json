@@ -1,0 +1,70 @@
+{
+  "name": "cursor-code",
+  "version": "1.0.0",
+  "description": "Mathematical narrative guidance system for AI-assisted development",
+  "main": "lib/cursor-code-lib.js",
+  "bin": {
+    "cursor-code": "./cursor-code.js",
+    "cursor-code-test": "./cursor-code-tests.js",
+    "cursor-coda-server": "./cursor-coda-server.js"
+  },
+  "scripts": {
+    "build": "haxe build-neko.hxml && haxe build-nodejs.hxml",
+    "build-neko": "haxe build-neko.hxml",
+    "build-node": "haxe build-nodejs.hxml",
+    "build-lib": "haxe -js lib/cursor-code-lib.js -cp src -main cursorcode.CursorCode -lib hxnodejs -lib yaml -D nodejs",
+    "init": "node cursor-code.js init",
+    "init-neko": "neko cursor-code.n init",
+    "create": "node cursor-code.js create",
+    "status": "node cursor-code.js status",
+    "guidance": "node cursor-code.js guidance",
+    "sections": "node cursor-code.js sections",
+    "update": "node cursor-code.js update",
+    "test": "node cursor-code.js test",
+    "test-node": "node cursor-code-tests.js",
+    "test-neko": "neko cursor-code-tests.n",
+    "track": "node cursor-code.js track",
+    "server": "node cursor-coda-server.js",
+    "server-neko": "neko cursor-coda-server.n",
+    "dev": "npm run build && npm run init",
+    "dev-neko": "haxe build.hxml && neko cursor-code.n init",
+    "install-deps": "haxelib install yaml && haxelib install hxnodejs",
+    "postinstall": "npm run install-deps || echo 'Haxe dependencies need to be installed manually'"
+  },
+  "keywords": [
+    "ai",
+    "development",
+    "narrative",
+    "guidance",
+    "haxe",
+    "cursor",
+    "yaml",
+    "front-matter",
+    "mathematical",
+    "scoring",
+    "nodejs"
+  ],
+  "author": "Cursor Code Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cursor-code/cursor-code.git"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "files": [
+    "lib/",
+    "src/",
+    "cursor-code.js",
+    "cursor-code-tests.js",
+    "cursor-coda-server.js",
+    "haxelib.json",
+    "build.hxml",
+    "README.md",
+    "package.json"
+  ]
+} 

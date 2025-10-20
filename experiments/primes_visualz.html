@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Pattern Visualizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        canvas {
+            display: block;
+            border: 1px solid #333;
+        }
+        
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+        
+        .control-group {
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ff00;
+        }
+        
+        input, select, button {
+            background: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #333;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        button {
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #2a2a2a;
+        }
+        
+        #info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 300px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="glCanvas" width="1920" height="1080"></canvas>
+        
+        <div id="controls">
+            <div class="control-group">
+                <label>Prime Range:</label>
+                <input type="number" id="startRange" value="1" min="1">
+                <input type="number" id="endRange" value="1000" min="1">
+            </div>
+            
+            <div class="control-group">
+                <label>Visualization Mode:</label>
+                <select id="vizMode">
+                    <option value="density">Density Wave</option>
+                    <option value="gaps">Prime Gaps</option>
+                    <option value="clusters">Prime Clusters</option>
+                    <option value="patterns">Pattern Recognition</option>
+                    <option value="rnn">RNN Stabilized</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Pattern Recognition:</label>
+                <button id="findPatterns">Find Patterns</button>
+                <button id="rebasePatterns">Rebase</button>
+                <button id="normalize">Normalize</button>
+            </div>
+            
+            <div class="control-group">
+                <label>KNN Parameters:</label>
+                <input type="number" id="knnK" value="5" min="1" max="20" style="width: 50px;">
+                <input type="number" id="patternThreshold" value="0.8" min="0" max="1" step="0.1" style="width: 50px;">
+            </div>
+            
+            <div class="control-group">
+                <button id="exportPatterns">Export Patterns</button>
+                <button id="clearCanvas">Clear</button>
+            </div>
+        </div>
+        
+        <div id="info">
+            <h3>Prime Pattern Visualizer</h3>
+            <p><strong>Mode:</strong> <span id="currentMode">Density Wave</span></p>
+            <p><strong>Primes Found:</strong> <span id="primeCount">0</span></p>
+            <p><strong>Patterns Detected:</strong> <span id="patternCount">0</span></p>
+            <p><strong>Confidence:</strong> <span id="confidence">0.0</span></p>
+            <p><strong>FPS:</strong> <span id="fps">0</span></p>
+        </div>
+    </div>
+
+    <script>
+        // WebGL setup
+        const canvas = document.getElementById('glCanvas');
+        const gl = canvas.getContext('webgl2');
+        
+        if (!gl) {
+            alert('WebGL2 not supported');
+            throw new Error('WebGL2 not supported');
+        }
+
+        // Shader programs
+        const vertexShaderSource = `#version 300 es
+            in vec2 a_position;
+            in vec4 a_color;
+            out vec4 v_color;
+            
+            void main() {
+                gl_Position = vec4(a_position, 0.0, 1.0);
+                v_color = a_color;
+            }
+        `;
+
+        const fragmentShaderSource = `#version 300 es
+            precision mediump float;
+            in vec4 v_color;
+            out vec4 outColor;
+            
+            void main() {
+                outColor = v_color;
+            }
+        `;
+
+        // Compile shaders
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
+        }
+
+        function createProgram(gl, vertexShader, fragmentShader) {
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error('Program link error:', gl.getProgramInfoLog(program));
+                gl.deleteProgram(program);
+                return null;
+            }
+            return program;
+        }
+
+        const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+        const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+        const program = createProgram(gl, vertexShader, fragmentShader);
+
+        // Get attribute locations
+        const positionLocation = gl.getAttribLocation(program, 'a_position');
+        const colorLocation = gl.getAttribLocation(program, 'a_color');
+
+        // Prime generation using Sieve of Eratosthenes
+        function generatePrimes(max) {
+            const sieve = new Array(max + 1).fill(true);
+            sieve[0] = sieve[1] = false;
+            
+            for (let i = 2; i * i <= max; i++) {
+                if (sieve[i]) {
+                    for (let j = i * i; j <= max; j += i) {
+                        sieve[j] = false;
+                    }
+                }
+            }
+            
+            const primes = [];
+            for (let i = 2; i <= max; i++) {
+                if (sieve[i]) primes.push(i);
+            }
+            return primes;
+        }
+
+        // KNN Pattern Recognition
+        class PrimePatternRecognizer {
+            constructor() {
+                this.patterns = [];
+                this.knnK = 5;
+                this.threshold = 0.8;
+            }
+
+            // Calculate distance between two patterns
+            distance(pattern1, pattern2) {
+                if (pattern1.length !== pattern2.length) return Infinity;
+                let sum = 0;
+                for (let i = 0; i < pattern1.length; i++) {
+                    sum += Math.pow(pattern1[i] - pattern2[i], 2);
+                }
+                return Math.sqrt(sum);
+            }
+
+            // Find K nearest neighbors
+            findKNN(newPattern, k = 5) {
+                const distances = this.patterns.map((pattern, index) => ({
+                    pattern: pattern,
+                    distance: this.distance(newPattern, pattern.values),
+                    index: index
+                }));
+                
+                distances.sort((a, b) => a.distance - b.distance);
+                return distances.slice(0, k);
+            }
+
+            // Detect patterns in prime gaps
+            detectPatterns(primes) {
+                const gaps = [];
+                for (let i = 1; i < primes.length; i++) {
+                    gaps.push(primes[i] - primes[i-1]);
+                }
+
+                console.log(`Analyzing ${gaps.length} prime gaps`);
+                console.log(`First 20 gaps:`, gaps.slice(0, 20));
+
+                // Look for repeating patterns using autocorrelation
+                const patternLength = 5; // Shorter patterns are more likely to repeat
+                const newPatterns = [];
+                
+                // First pass: find all possible patterns
+                const allPatterns = [];
+                for (let i = 0; i <= gaps.length - patternLength; i++) {
+                    const pattern = gaps.slice(i, i + patternLength);
+                    allPatterns.push({
+                        values: pattern,
+                        position: i,
+                        count: 1
+                    });
+                }
+                
+                // Second pass: find similar patterns and group them
+                for (let i = 0; i < allPatterns.length; i++) {
+                    for (let j = i + 1; j < allPatterns.length; j++) {
+                        const distance = this.distance(allPatterns[i].values, allPatterns[j].values);
+                        if (distance < 2.0) { // More lenient threshold for initial detection
+                            allPatterns[i].count++;
+                            allPatterns[j].count++;
+                        }
+                    }
+                }
+                
+                // Filter patterns that appear multiple times
+                for (const pattern of allPatterns) {
+                    if (pattern.count >= 2) { // Pattern appears at least twice
+                        const confidence = Math.min(0.9, pattern.count / 5.0); // Normalize confidence
+                        newPatterns.push({
+                            values: pattern.values,
+                            confidence: confidence,
+                            position: pattern.position,
+                            type: 'gap_pattern',
+                            count: pattern.count
+                        });
+                    }
+                }
+                
+                console.log(`Found ${newPatterns.length} repeating patterns`);
+                this.patterns.push(...newPatterns);
+                return newPatterns;
+            }
+
+            // Rebase patterns based on new discoveries
+            rebasePatterns() {
+                // Group similar patterns
+                const groups = [];
+                for (const pattern of this.patterns) {
+                    let added = false;
+                    for (const group of groups) {
+                        if (this.distance(pattern.values, group[0].values) < 0.5) {
+                            group.push(pattern);
+                            added = true;
+                            break;
+                        }
+                    }
+                    if (!added) {
+                        groups.push([pattern]);
+                    }
+                }
+                
+                // Create representative patterns
+                this.patterns = groups.map(group => {
+                    const avgValues = group[0].values.map((_, i) => 
+                        group.reduce((sum, p) => sum + p.values[i], 0) / group.length
+                    );
+                    return {
+                        values: avgValues,
+                        confidence: group.reduce((sum, p) => sum + p.confidence, 0) / group.length,
+                        count: group.length,
+                        type: 'representative'
+                    };
+                });
+            }
+        }
+
+        // Simplified RNN for stabilizing sets across orders of magnitude
+        class PrimeStabilizationRNN {
+            constructor() {
+                this.hiddenState = 0;
+                this.learningRate = 0.01;
+            }
+
+            // Simple log-based stabilization
+            stabilizeSequence(sequence) {
+                const stabilized = [];
+                
+                for (let i = 0; i < sequence.length; i++) {
+                    // Log normalization with moving average
+                    const logValue = Math.log(sequence[i] + 1);
+                    const movingAvg = i > 0 ? (stabilized[i-1] * 0.9 + logValue * 0.1) : logValue;
+                    stabilized.push(movingAvg);
+                }
+                
+                return stabilized;
+            }
+
+            // Simple training (just for show)
+            trainOnGaps(primes, epochs = 10) {
+                const gaps = [];
+                for (let i = 1; i < primes.length; i++) {
+                    gaps.push(primes[i] - primes[i-1]);
+                }
+
+                console.log(`Stabilizing ${gaps.length} prime gaps with log normalization`);
+                
+                // Just simulate training
+                for (let epoch = 0; epoch < epochs; epoch++) {
+                    if (epoch % 5 === 0) {
+                        console.log(`Stabilization epoch ${epoch}`);
+                    }
+                }
+            }
+
+            // Generate stabilized patterns
+            generateStabilizedPatterns(primes) {
+                const gaps = [];
+                for (let i = 1; i < primes.length; i++) {
+                    gaps.push(primes[i] - primes[i-1]);
+                }
+
+                const stabilizedGaps = this.stabilizeSequence(gaps);
+                
+                // Find patterns in stabilized sequence
+                const patternLength = 5;
+                const patterns = [];
+                
+                for (let i = 0; i <= stabilizedGaps.length - patternLength; i++) {
+                    const pattern = stabilizedGaps.slice(i, i + patternLength);
+                    patterns.push({
+                        values: pattern,
+                        position: i,
+                        type: 'stabilized_pattern',
+                        confidence: 0.8
+                    });
+                }
+                
+                return patterns;
+            }
+        }
+
+        // Reverse Kalman Filter for pattern prediction
+        class ReverseKalmanFilter {
+            constructor() {
+                this.state = [];
+                this.covariance = 1.0;
+                this.processNoise = 0.1;
+                this.measurementNoise = 0.5;
+            }
+
+            // Predict next values based on current pattern
+            predict(pattern, steps = 5) {
+                const predictions = [];
+                let currentState = [...pattern];
+                
+                for (let i = 0; i < steps; i++) {
+                    // Simple linear prediction with noise
+                    const nextValue = currentState[currentState.length - 1] + 
+                                    (currentState[currentState.length - 1] - currentState[currentState.length - 2]) * 0.5 +
+                                    (Math.random() - 0.5) * this.processNoise;
+                    
+                    predictions.push(nextValue);
+                    currentState.push(nextValue);
+                    currentState.shift();
+                }
+                
+                return predictions;
+            }
+
+            // Update filter with new measurements
+            update(measurement) {
+                // Simplified Kalman update
+                const kalmanGain = this.covariance / (this.covariance + this.measurementNoise);
+                this.state = this.state.map((s, i) => s + kalmanGain * (measurement[i] - s));
+                this.covariance = (1 - kalmanGain) * this.covariance;
+            }
+        }
+
+        // Visualization state
+        let primes = [];
+        let patterns = [];
+        let patternRecognizer = new PrimePatternRecognizer();
+        let kalmanFilter = new ReverseKalmanFilter();
+        let stabilizationRNN = new PrimeStabilizationRNN();
+        let animationId = null;
+        let lastTime = 0;
+        let frameCount = 0;
+
+        // Initialize visualization
+        function init() {
+            const startRange = parseInt(document.getElementById('startRange').value);
+            const endRange = parseInt(document.getElementById('endRange').value);
+            
+            primes = generatePrimes(endRange);
+            
+            // Add some known prime patterns for testing
+            if (primes.length > 0) {
+                // Twin primes pattern (gap = 2)
+                const twinPrimes = [];
+                for (let i = 1; i < primes.length; i++) {
+                    if (primes[i] - primes[i-1] === 2) {
+                        twinPrimes.push({
+                            values: [2],
+                            confidence: 0.8,
+                            position: i-1,
+                            type: 'twin_prime',
+                            count: 1
+                        });
+                    }
+                }
+                
+                // Cousin primes pattern (gap = 4)
+                const cousinPrimes = [];
+                for (let i = 1; i < primes.length; i++) {
+                    if (primes[i] - primes[i-1] === 4) {
+                        cousinPrimes.push({
+                            values: [4],
+                            confidence: 0.7,
+                            position: i-1,
+                            type: 'cousin_prime',
+                            count: 1
+                        });
+                    }
+                }
+                
+                console.log(`Found ${twinPrimes.length} twin prime pairs`);
+                console.log(`Found ${cousinPrimes.length} cousin prime pairs`);
+                
+                // Generate stabilized patterns (lightweight)
+                const stabilizedPatterns = stabilizationRNN.generateStabilizedPatterns(primes);
+                console.log(`Generated ${stabilizedPatterns.length} stabilized patterns`);
+                
+                patterns = [...twinPrimes, ...cousinPrimes, ...patternRecognizer.detectPatterns(primes), ...stabilizedPatterns];
+            } else {
+                patterns = patternRecognizer.detectPatterns(primes);
+            }
+            
+            console.log(`Generated ${primes.length} primes up to ${endRange}`);
+            console.log(`First 10 primes:`, primes.slice(0, 10));
+            
+            updateInfo();
+            render();
+        }
+
+        // Render function
+        function render() {
+            const currentTime = performance.now();
+            frameCount++;
+            
+            if (currentTime - lastTime >= 1000) {
+                document.getElementById('fps').textContent = Math.round(frameCount * 1000 / (currentTime - lastTime));
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            gl.useProgram(program);
+
+            const vizMode = document.getElementById('vizMode').value;
+            console.log(`Rendering mode: ${vizMode}, primes count: ${primes.length}`);
+            
+            switch (vizMode) {
+                case 'density':
+                    renderDensityWave();
+                    break;
+                case 'gaps':
+                    renderPrimeGaps();
+                    break;
+                case 'clusters':
+                    renderPrimeClusters();
+                    break;
+                case 'patterns':
+                    renderPatterns();
+                    break;
+                case 'rnn':
+                    renderRNNStabilized();
+                    break;
+            }
+
+            animationId = requestAnimationFrame(render);
+        }
+
+        // Render density wave
+        function renderDensityWave() {
+            const vertices = [];
+            const colors = [];
+            
+            for (let i = 0; i < primes.length - 1; i++) {
+                const x1 = (primes[i] / primes[primes.length - 1]) * 2 - 1;
+                const x2 = (primes[i + 1] / primes[primes.length - 1]) * 2 - 1;
+                const y1 = Math.sin(primes[i] * 0.01) * 0.3;
+                const y2 = Math.sin(primes[i + 1] * 0.01) * 0.3;
+                
+                // Gradient from opaque to transparent
+                const alpha1 = Math.max(0.1, 1.0 - (i / primes.length));
+                const alpha2 = Math.max(0.1, 1.0 - ((i + 1) / primes.length));
+                
+                vertices.push(x1, y1, x2, y2);
+                colors.push(0, 1, 0, alpha1, 0, 1, 0, alpha2);
+            }
+            
+            renderLines(vertices, colors);
+        }
+
+        // Render prime gaps
+        function renderPrimeGaps() {
+            const vertices = [];
+            const colors = [];
+            
+            for (let i = 1; i < primes.length; i++) {
+                const gap = primes[i] - primes[i-1];
+                const x = (i / primes.length) * 2 - 1;
+                const y = (gap / 100) * 0.8; // Normalize gap size
+                
+                vertices.push(x, y);
+                colors.push(1, 0, 0, 1.0);
+            }
+            
+            renderPoints(vertices, colors);
+        }
+
+        // Render prime clusters
+        function renderPrimeClusters() {
+            const vertices = [];
+            const colors = [];
+            
+            // Find clusters of primes
+            const clusters = [];
+            let currentCluster = [primes[0]];
+            
+            for (let i = 1; i < primes.length; i++) {
+                if (primes[i] - primes[i-1] <= 10) { // Close primes
+                    currentCluster.push(primes[i]);
+                } else {
+                    if (currentCluster.length > 1) {
+                        clusters.push([...currentCluster]);
+                    }
+                    currentCluster = [primes[i]];
+                }
+            }
+            
+            for (const cluster of clusters) {
+                const centerX = cluster.reduce((sum, p) => sum + p, 0) / cluster.length;
+                const x = (centerX / primes[primes.length - 1]) * 2 - 1;
+                const y = Math.sin(centerX * 0.01) * 0.5;
+                const size = cluster.length / 10;
+                
+                vertices.push(x, y);
+                colors.push(0, 0, 1, size);
+            }
+            
+            renderPoints(vertices, colors);
+        }
+
+        // Render detected patterns
+        function renderPatterns() {
+            const vertices = [];
+            const colors = [];
+            
+            for (const pattern of patterns) {
+                const startX = (pattern.position / primes.length) * 2 - 1;
+                const patternWidth = (pattern.values.length / primes.length) * 2;
+                
+                for (let i = 0; i < pattern.values.length; i++) {
+                    const x = startX + (i / pattern.values.length) * patternWidth;
+                    const y = (pattern.values[i] / 100) * 0.8;
+                    
+                    vertices.push(x, y);
+                    colors.push(1, 1, 0, pattern.confidence);
+                }
+            }
+            
+            renderPoints(vertices, colors);
+        }
+
+        // Render RNN stabilized patterns
+        function renderRNNStabilized() {
+            const vertices = [];
+            const colors = [];
+            
+            // Get stabilized gaps
+            const gaps = [];
+            for (let i = 1; i < primes.length; i++) {
+                gaps.push(primes[i] - primes[i-1]);
+            }
+            
+            const stabilizedGaps = stabilizationRNN.stabilizeSequence(gaps);
+            
+            // Render the stabilized sequence
+            for (let i = 0; i < stabilizedGaps.length; i++) {
+                const x = (i / stabilizedGaps.length) * 2 - 1;
+                const y = stabilizedGaps[i] * 0.8; // Scale to fit screen
+                
+                vertices.push(x, y);
+                
+                // Color based on pattern type
+                if (patterns.some(p => p.position === i && p.type === 'stabilized_pattern')) {
+                    colors.push(0, 1, 1, 0.9); // Cyan for stabilized patterns
+                } else {
+                    colors.push(1, 0, 1, 0.5); // Magenta for regular stabilized values
+                }
+            }
+            
+            renderPoints(vertices, colors);
+        }
+
+        // Helper rendering functions
+        function renderLines(vertices, colors) {
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const colorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(colorLocation);
+            gl.vertexAttribPointer(colorLocation, 4, gl.FLOAT, false, 0, 0);
+
+            gl.drawArrays(gl.LINES, 0, vertices.length / 2);
+        }
+
+        function renderPoints(vertices, colors) {
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const colorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+            gl.enableVertexAttribArray(colorLocation);
+            gl.vertexAttribPointer(colorLocation, 4, gl.FLOAT, false, 0, 0);
+
+            gl.drawArrays(gl.POINTS, 0, vertices.length / 2);
+        }
+
+        // Update info display
+        function updateInfo() {
+            document.getElementById('primeCount').textContent = primes.length;
+            document.getElementById('patternCount').textContent = patterns.length;
+            document.getElementById('currentMode').textContent = document.getElementById('vizMode').value;
+            
+            if (patterns.length > 0) {
+                const avgConfidence = patterns.reduce((sum, p) => sum + p.confidence, 0) / patterns.length;
+                document.getElementById('confidence').textContent = avgConfidence.toFixed(3);
+            }
+        }
+
+        // Event listeners
+        document.getElementById('startRange').addEventListener('change', init);
+        document.getElementById('endRange').addEventListener('change', init);
+        document.getElementById('vizMode').addEventListener('change', () => {
+            document.getElementById('currentMode').textContent = document.getElementById('vizMode').value;
+        });
+
+        document.getElementById('findPatterns').addEventListener('click', () => {
+            patterns = patternRecognizer.detectPatterns(primes);
+            updateInfo();
+        });
+
+        document.getElementById('rebasePatterns').addEventListener('click', () => {
+            patternRecognizer.rebasePatterns();
+            patterns = patternRecognizer.patterns;
+            updateInfo();
+        });
+
+        document.getElementById('normalize').addEventListener('click', () => {
+            // Normalize pattern confidence scores
+            const maxConfidence = Math.max(...patterns.map(p => p.confidence));
+            patterns.forEach(p => p.confidence /= maxConfidence);
+            updateInfo();
+        });
+
+        document.getElementById('exportPatterns').addEventListener('click', () => {
+            const data = {
+                patterns: patterns,
+                primes: primes,
+                metadata: {
+                    timestamp: new Date().toISOString(),
+                    patternCount: patterns.length,
+                    primeCount: primes.length
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'prime_patterns.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('clearCanvas').addEventListener('click', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            patterns = [];
+            updateInfo();
+            render();
+        });
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+# Extensible Language Symbol Configuration
+# This allows adding new languages without modifying code
+
+languages:
+  # Web Technologies
+  javascript:
+    extensions: ["js", "mjs", "cjs"]
+    comments: ["//", "/*", "*/", "/**"]
+    functions: ["function", "=>", "async function", "function*", "const", "let", "var"]
+    types: ["class", "constructor", "prototype"]
+    imports: ["import", "require", "from", "export"]
+    complexity: ["if", "else", "for", "while", "switch", "case", "try", "catch", "?", "&&", "||", "??"]
+    typeDefinitions: ["typeof", "instanceof"]
+    patterns:
+      functional: ["map", "filter", "reduce", "forEach", "arrow functions"]
+      async: ["async", "await", "Promise", "then", "catch"]
+      modern: ["const", "let", "destructuring", "spread operator"]
+
+  typescript:
+    extensions: ["ts", "tsx", "d.ts"]
+    comments: ["//", "/*", "*/", "/**", "@param", "@returns", "@deprecated"]
+    functions: ["function", "=>", "async function", "function*", "abstract", "static"]
+    types: ["class", "interface", "type", "enum", "namespace", "module", "abstract"]
+    imports: ["import", "export", "from", "require", "namespace"]
+    complexity: ["if", "else", "for", "while", "switch", "case", "try", "catch", "?", "&&", "||", "??", "!"]
+    typeDefinitions: [":", "as", "typeof", "keyof", "extends", "implements", "<", ">", "Union", "Intersection"]
+    patterns:
+      typing: ["generic types", "union types", "intersection types", "mapped types"]
+      decorators: ["@", "decorator", "metadata"]
+
+  # Systems Programming
+  rust:
+    extensions: ["rs"]
+    comments: ["//", "/*", "*/", "///", "//!", "/* ... */"]
+    functions: ["fn", "async fn", "const fn", "unsafe fn", "extern fn"]
+    types: ["struct", "enum", "trait", "impl", "type", "union"]
+    imports: ["use", "mod", "extern", "crate", "pub"]
+    complexity: ["if", "else", "for", "while", "loop", "match", "?", "&&", "||", "if let", "while let"]
+    typeDefinitions: [":", "->", "impl", "where", "<", ">", "dyn", "Box", "Rc", "Arc"]
+    patterns:
+      ownership: ["ownership", "borrowing", "lifetime", "&", "&mut", "move"]
+      safety: ["unsafe", "panic!", "Result", "Option"]
+
+  go:
+    extensions: ["go"]
+    comments: ["//", "/*", "*/"]
+    functions: ["func", "go func", "defer"]
+    types: ["type", "struct", "interface", "map", "chan", "slice"]
+    imports: ["import", "package"]
+    complexity: ["if", "else", "for", "switch", "case", "select", "go", "defer", "&&", "||"]
+    typeDefinitions: ["type", "struct", "interface", "chan", "map", "[]", "*"]
+    patterns:
+      concurrency: ["goroutine", "channel", "select", "sync", "mutex"]
+      simplicity: ["single return", "explicit error handling"]
+
+  # Functional Languages  
+  haskell:
+    extensions: ["hs", "lhs"]
+    comments: ["--", "{-", "-}"]
+    functions: ["=", "->", "\\", "where", "let", "in"]
+    types: ["data", "type", "newtype", "class", "instance", "deriving"]
+    imports: ["import", "module", "qualified", "as", "hiding"]
+    complexity: ["case", "of", "|", "if", "then", "else", "guard"]
+    typeDefinitions: ["::", "=>", "forall", "∀"]
+    patterns:
+      functional: ["higher-order functions", "pattern matching", "immutability"]
+      purity: ["pure functions", "monads", "functors"]
+
+  # Dynamic Languages
+  python:
+    extensions: ["py", "pyw", "py3"]
+    comments: ["#", '"""', "'''"]
+    functions: ["def", "lambda", "async def", "@", "yield"]
+    types: ["class", "dataclass", "Protocol", "TypedDict", "NamedTuple"]
+    imports: ["import", "from", "as", "__import__"]
+    complexity: ["if", "elif", "else", "for", "while", "try", "except", "finally", "match", "case", "and", "or", "not"]
+    typeDefinitions: [":", "->", "Union", "Optional", "List", "Dict", "Tuple", "Any", "TypeVar"]
+    patterns:
+      pythonic: ["list comprehension", "generator", "decorator", "context manager"]
+      typing: ["type hints", "mypy", "protocols"]
+
+  ruby:
+    extensions: ["rb", "rbw"]
+    comments: ["#", "=begin", "=end"]
+    functions: ["def", "lambda", "proc", "->", "class_method", "instance_method"]
+    types: ["class", "module", "struct", "attr_reader", "attr_writer", "attr_accessor"]
+    imports: ["require", "load", "include", "extend", "prepend"]
+    complexity: ["if", "unless", "case", "when", "for", "while", "until", "&&", "||", "and", "or"]
+    typeDefinitions: ["<", "<<", "::", "alias", "undef"]
+    patterns:
+      metaprogramming: ["eval", "define_method", "method_missing", "const_missing"]
+      blocks: ["yield", "block_given?", "proc", "lambda"]
+
+  # Mobile Development
+  swift:
+    extensions: ["swift"]
+    comments: ["//", "/*", "*/", "///", "/**"]
+    functions: ["func", "init", "deinit", "subscript", "lazy", "static", "class"]
+    types: ["class", "struct", "enum", "protocol", "extension", "typealias"]
+    imports: ["import", "public", "internal", "private", "fileprivate"]
+    complexity: ["if", "else", "for", "while", "switch", "case", "guard", "do", "try", "catch", "&&", "||", "??"]
+    typeDefinitions: [":", "->", "throws", "rethrows", "where", "<", ">", "some", "any"]
+    patterns:
+      optionals: ["?", "!", "nil", "guard", "if let", "while let"]
+      memory: ["weak", "strong", "unowned", "autoreleasepool"]
+
+  kotlin:
+    extensions: ["kt", "kts"]
+    comments: ["//", "/*", "*/", "/**", "@param", "@return"]
+    functions: ["fun", "inline", "suspend", "operator", "infix"]
+    types: ["class", "interface", "object", "enum", "sealed", "data", "annotation"]
+    imports: ["import", "package", "typealias"]
+    complexity: ["if", "else", "for", "while", "when", "try", "catch", "finally", "&&", "||", "?:", "!!"]
+    typeDefinitions: [":", "->", "where", "<", ">", "out", "in", "reified"]
+    patterns:
+      null_safety: ["?", "!!", "?:", "let", "also", "apply", "run"]
+      coroutines: ["suspend", "async", "await", "coroutine", "flow"]
+
+# Build target specific enhancements
+build_targets:
+  nodejs:
+    additional_symbols:
+      imports: ["require", "module.exports", "exports", "__dirname", "__filename"]
+      complexity: ["process.env", "callback", "error-first callback"]
+      patterns: ["npm", "package.json", "node_modules"]
+  
+  neko:
+    additional_symbols:
+      imports: ["neko", "std"]
+      functions: ["$", "neko."]
+      
+  cpp:
+    additional_symbols:
+      imports: ["#include", "#define", "#ifdef", "#ifndef"]
+      complexity: ["template", "virtual", "override", "nullptr"]
+      
+  java:
+    additional_symbols:
+      imports: ["package", "import", "static"]
+      types: ["@interface", "annotation"]
+
+# Framework-specific patterns
+frameworks:
+  react:
+    patterns: ["jsx", "hooks", "component", "props", "state", "useEffect", "useState"]
+    complexity: ["conditional rendering", "event handlers", "lifecycle"]
+    
+  vue:
+    patterns: ["template", "script", "style", "computed", "watch", "mounted"]
+    
+  angular:
+    patterns: ["@Component", "@Injectable", "@NgModule", "template", "selector"]
+    
+  express:
+    patterns: ["app.get", "app.post", "middleware", "req", "res", "next"]
+    
+  django:
+    patterns: ["models.py", "views.py", "urls.py", "templates", "middleware"]

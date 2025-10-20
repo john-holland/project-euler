@@ -1,0 +1,26 @@
+---
+test_section:
+  title: "Test Section"
+  preface: |
+    This is a test section in the front matter.
+    It should be properly parsed by the new system.
+  
+  test_items:
+    - "Item 1"
+    - "Item 2"
+    - "Item 3"
+---
+
+cursor_coda:
+  version: "1.0"
+  project: "Test Project"
+  last_updated: "2024-12-19"
+  
+  sections:
+    another_section:
+      title: "Another Section"
+      preface: "This is in the cursor_coda sections."
+  
+  narrative_templates:
+    test_template:
+      - "Test template phrase"

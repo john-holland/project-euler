@@ -1,0 +1,71 @@
+{
+  "name": "cursor-code-demo",
+  "version": "1.0.0",
+  "description": "Demonstration package for build system analysis",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Cursor Code Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cursor/cursor-code.git"
+  },
+  "keywords": ["haxe", "reflection", "ast", "analysis", "build-systems"],
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "node dist/index.js",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint src/ --ext .js,.ts",
+    "lint:fix": "eslint src/ --ext .js,.ts --fix",
+    "format": "prettier --write src/**/*.{js,ts}",
+    "typecheck": "tsc --noEmit",
+    "audit": "npm audit",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21",
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "@types/express": "^4.17.17",
+    "@types/lodash": "^4.14.195",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.6.1",
+    "lint-staged": "^13.2.3",
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}

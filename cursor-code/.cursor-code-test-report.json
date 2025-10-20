@@ -1,0 +1,121 @@
+{
+  "narrativeForm": 0.489673005873276,
+  "results": [
+    {
+      "test": "Front matter YAML should parse successfully",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should find front matter section",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should find cursor_coda section",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should return front matter section content",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should have available sections",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should find problem_analysis section",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should format guidance properly",
+      "passed": false,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should return error for invalid section",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Fitness should be between 0.0 and 1.0",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should have positive fitness for commented code",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Empty file fitness should be valid",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Integration score should be between 0.0 and 1.0",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should have positive integration score with build files",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Narrative form should be between 0.0 and 1.0",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should store AST fitness score",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should store integration score",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Similar responses should not be significantly different",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Different responses should be significantly different",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Update check should return boolean",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should create update log file",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    },
+    {
+      "test": "Should contain proper message to Cursor",
+      "passed": true,
+      "timestamp": "2025-08-06 00:16:15"
+    }
+  ],
+  "projectScores": {
+    "integration": 0.7,
+    "ast_fitness": 0.349455009788794
+  },
+  "summary": {
+    "successRate": 67,
+    "failed": 7,
+    "passed": 14,
+    "total": 21
+  },
+  "timestamp": "2025-08-06 00:16:15"
+}

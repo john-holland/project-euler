@@ -1,0 +1,14 @@
+{
+  "name": "project-euler",
+  "version": "1.0.0",
+  "description": "interview problems",
+  "main": "index.js",
+  "scripts": {
+    "test": "\"node index.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^14.0.0"
+  }
+}

@@ -1,0 +1,7 @@
+# Main build script - builds both Neko and Node.js targets
+
+# CLI tool build (Neko)
+-neko cursor-code.n
+-cp src
+-main CursorCodeCLI
+-lib yaml 

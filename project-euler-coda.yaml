@@ -1,0 +1,211 @@
+---
+# Project Euler Specific Cursor Coda
+# Mathematical problem-solving guidance for extreme AI-assisted competitive programming!
+
+problem_analysis:
+  title: "Mathematical Problem Analysis"
+  preface: |
+    When approaching a Project Euler problem, I follow this systematic approach:
+    1. Read the problem statement carefully, identifying key constraints, and cross reference with our cursor-coda.yaml file.
+    2. Break down the problem into smaller, manageable sub-problems
+    3. Identify the mathematical concepts and algorithms needed
+    4. Consider edge cases and boundary conditions
+    5. Estimate computational complexity and feasibility
+    6. Update the cursor-coda.yaml with the problem analysis where applicable.
+    
+    My goal is to understand the problem deeply before writing any code.
+    I prioritize mathematical insights over brute force approaches.
+  
+  key_questions:
+    - "What are the core mathematical concepts?"
+    - "What are the input constraints and expected output format?"
+    - "What algorithms or data structures would be most appropriate?"
+    - "Are there any patterns or symmetries I can exploit?"
+    - "Can I solve a smaller version of this problem first?"
+  
+  development_style:
+    - "Start with mathematical analysis"
+    - "Implement a simple, correct solution first"
+    - "Optimize based on mathematical insights"
+    - "Test with provided examples"
+    - "Verify edge cases and large inputs"
+
+algorithm_design:
+  title: "Mathematical Algorithm Design"
+  preface: |
+    I design algorithms with mathematical efficiency in mind:
+    - Mathematical insights over computational brute force
+    - Algorithmic complexity analysis before implementation
+    - Pattern recognition for similar problem types
+    - Optimization through mathematical properties
+    
+    I prefer to find the mathematical solution rather than
+    relying purely on computational power.
+  
+  design_patterns:
+    - "Sieve methods for prime-related problems"
+    - "Dynamic programming for optimization"
+    - "Combinatorial mathematics for counting"
+    - "Number theory for divisibility and modular arithmetic"
+    - "Graph algorithms for path and connectivity problems"
+  
+  mathematical_techniques:
+    - "Prime factorization and number theory"
+    - "Modular arithmetic for large numbers"
+    - "Combinatorial formulas and binomial coefficients"
+    - "Greatest common divisor and least common multiple"
+    - "Mathematical induction and proof techniques"
+
+project_euler_specific:
+  title: "Project Euler Problem Patterns"
+  preface: |
+    Project Euler problems often follow certain patterns:
+    - Number theory problems (primes, factors, GCD/LCM)
+    - Combinatorial problems (permutations, combinations)
+    - Optimization problems (dynamic programming)
+    - Geometric problems (lattice points, areas)
+    - String/sequence problems (palindromes, patterns)
+    
+    I recognize these patterns and apply appropriate techniques.
+    Many problems can be solved efficiently with mathematical insights.
+  
+  common_techniques:
+    - "Prime factorization and sieving"
+    - "Dynamic programming for optimization"
+    - "Modular arithmetic for large numbers"
+    - "Combinatorial mathematics"
+    - "Geometric algorithms"
+    - "Fibonacci and sequence analysis"
+    - "Digital root and digit manipulation"
+    - "Palindrome detection and generation"
+  
+  performance_considerations:
+    - "JavaScript number limitations (2^53)"
+    - "Memory constraints for large datasets"
+    - "Time complexity for growing inputs"
+    - "Floating point precision issues"
+    - "One-minute rule: solutions should run in under 60 seconds"
+  
+  optimization_strategies:
+    - "Mathematical shortcuts over brute force"
+    - "Precomputation of frequently used values"
+    - "Memoization for recursive problems"
+    - "Early termination conditions"
+    - "Efficient data structures for the problem domain"
+
+code_quality:
+  title: "Mathematical Code Quality"
+  preface: |
+    I maintain high code quality standards for mathematical problems:
+    - Clear, descriptive function and variable names
+    - Comments explaining mathematical reasoning
+    - Modular design for reusable mathematical functions
+    - Verification through test cases and examples
+    
+    Mathematical code should be both correct and understandable.
+  
+  standards:
+    - "Functions should represent clear mathematical operations"
+    - "Variables should use mathematical notation when appropriate"
+    - "Comments explain mathematical reasoning and formulas"
+    - "Test cases verify correctness for edge cases"
+  
+  testing_approach:
+    - "Test with provided examples first"
+    - "Verify edge cases (0, 1, small numbers)"
+    - "Test with larger inputs to check performance"
+    - "Validate mathematical properties and invariants"
+
+optimization_phase:
+  title: "Mathematical Optimization Strategy"
+  preface: |
+    When optimizing Project Euler solutions, I follow this approach:
+    1. Analyze the mathematical properties of the problem
+    2. Look for mathematical shortcuts and closed-form solutions
+    3. Consider algorithmic improvements based on number theory
+    4. Optimize data structures for mathematical operations
+    5. Use language-specific optimizations as a last resort
+    
+    Mathematical insight usually provides the biggest performance gains.
+  
+  optimization_hierarchy:
+    - "Mathematical insights and closed-form solutions (biggest gains)"
+    - "Algorithmic improvements (sieve, DP, etc.)"
+    - "Data structure optimization"
+    - "Computational optimizations"
+    - "Language-specific micro-optimizations (last resort)"
+  
+  mathematical_optimizations:
+    - "Replace iteration with mathematical formulas"
+    - "Use properties of numbers (divisibility, primality)"
+    - "Apply mathematical theorems and identities"
+    - "Exploit symmetries and patterns"
+    - "Precompute mathematical constants and sequences"
+
+---
+
+cursor_coda:
+  version: "1.0"
+  project: "Project Euler Solutions"
+  last_updated: "2024-12-19"
+  
+  # Core narrative sections that can be referenced
+  sections:
+    problem_analysis:
+      title: "Mathematical Problem Analysis"
+      preface: "Mathematical problem analysis for Project Euler problems."
+    
+    algorithm_design:
+      title: "Mathematical Algorithm Design"
+      preface: "Algorithm design with mathematical efficiency in mind."
+    
+    project_euler_specific:
+      title: "Project Euler Problem Patterns"
+      preface: "Specific patterns and techniques for Project Euler problems."
+    
+    code_quality:
+      title: "Mathematical Code Quality"
+      preface: "Code quality standards for mathematical problems."
+    
+    optimization_phase:
+      title: "Mathematical Optimization Strategy"
+      preface: "Optimization strategies for mathematical problems."
+
+  # Development narrative templates
+  narrative_templates:
+    problem_start:
+      - "Let me analyze this mathematical problem systematically"
+      - "First, I'll identify the mathematical concepts involved"
+      - "I'll look for patterns and mathematical properties"
+    
+    implementation_start:
+      - "Now I'll implement a mathematically sound solution"
+      - "I'll start with the most direct mathematical approach"
+      - "Let me code the mathematical logic step by step"
+    
+    optimization_start:
+      - "The solution works, but let me find mathematical optimizations"
+      - "I'll look for mathematical shortcuts and closed-form solutions"
+      - "Let me analyze the mathematical properties for efficiency gains"
+    
+    debugging_start:
+      - "I need to verify the mathematical logic systematically"
+      - "Let me trace through the mathematical operations"
+      - "I'll check the mathematical properties and edge cases"
+
+  # Context-aware responses
+  context_responses:
+    stuck:
+      - "Let me step back and analyze the mathematical structure"
+      - "I should look for similar mathematical problems"
+      - "Let me break this down into smaller mathematical components"
+    
+    performance_issue:
+      - "I need to find mathematical shortcuts"
+      - "Let me look for closed-form mathematical solutions"
+      - "I should consider more efficient mathematical algorithms"
+    
+    correctness_issue:
+      - "Let me verify my mathematical reasoning"
+      - "I should test with more mathematical edge cases"
+      - "Let me check the mathematical properties and invariants"
